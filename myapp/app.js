@@ -22,7 +22,7 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-nunjucks.configure('vies', {
+nunjucks.configure('views', {
     express: app,
     watch: true,
 });
@@ -49,7 +49,6 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000 // 쿠키 유효기간 24시간
     }
 }));
-
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

@@ -1,4 +1,7 @@
-let userPW = document.querySelector('.userPW')
+const XSSfilter = content => content.replace(/\&/g, '&amp;').replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace(/\"/g, '&quot;').replace(/\'/g, '&#x27').replace(/\//g, '&#x2F');
+
+
+let userPW = document.querySelector('#userPW')
 
 let isAvailableID = false;
 let isAvailablePW = false;
@@ -25,19 +28,23 @@ function checkID(e) {
         return;
     } else { }
 
-    //ajax로 존재하는 아이디인지 확인
-    // 사용 중인 아이디라면
+    $.ajax({
+        url: `/users/confirmid`,
+        data: { id: e.value },
+        type: "get",
+        success: function (result) {
+            if (result) {
+                displayCheckID.textContent = '이미 사용 중인 아이디입니다.'
+                return;
+                // 사용 가능한 아이디
+            } else {
+                isAvailableID = true;
 
-    if (false) {
-        displayCheckID.textContent = '이미 사용 중인 아이디입니다.'
-        return;
-        // 사용 가능한 아이디
-    } else {
-        isAvailableID = true;
-
-        displayCheckID.style.color = 'rgb(29, 165, 255)';
-        displayCheckID.textContent = '사용 가능한 아이디입니다.'
-    }
+                displayCheckID.style.color = '#00B7FF';
+                displayCheckID.textContent = '사용 가능한 아이디입니다.'
+            }
+        }
+    });
 }
 
 // 회원가입 가능한 비밀번호인지 확인
@@ -61,17 +68,49 @@ function checkPW(e) {
         displayCheckPW.textContent = '';
     }
 }
-
 // 비밀번호 재확인
 function confirmPW(e) {
-    const displayCheckPW2 = document.querySelector('.confirmPW');
+    const displayCheckPW = document.querySelector('.confirmPW');
 
     isSameAsPW = false;
-
     if (userPW.value !== e.value) {
-        displayCheckPW2.textContent = '비밀번호가 일치하지 않습니다.';
+        displayCheckPW.textContent = '비밀번호가 일치하지 않습니다.';
     } else {
         isSameAsPW = true;
-        displayCheckPW2.textContent = '';
+        displayCheckPW.textContent = '';
+    }
+}
+
+// 회원가입 액션
+function signup() {
+    let alertMsg = document.querySelector('.alertUser');
+
+    if (!isAvailableID) {
+        alertMsg.innerText = '아이디를 확인해주세요.';
+    }
+    else if (!isAvailablePW) {
+        alertMsg.innerText = '비밀번호를 확인해주세요.';
+    }
+    else if (!isSameAsPW) {
+        alertMsg.innerText = '비밀번호가 일치하지 않습니다.';
+    }
+    else {
+        let userID = XSSfilter(document.querySelector('#userID').value);
+        let userPW = XSSfilter(document.querySelector('#userPW').value);
+        let joinCode = XSSfilter(document.querySelector('#joinCode').value);
+
+        $.ajax({
+            url: `/users/signup`,
+            data: { userID, userPW },
+            type: "post",
+            success: function (result) {
+                if (result) {
+                    console.log('sucees');
+                    location.href = 'success'
+                } else {
+                    alertMsg.innerText = '아이디 또는 비밀번호를 확인해주세요.';
+                }
+            }
+        });
     }
 }

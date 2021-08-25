@@ -1,7 +1,8 @@
 <link rel='stylesheet' href='/css/user.css' />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <h3>회원가입</h3>
-<form action="/signup" method="post">
+<form action="" method="post">
     <table>
         <tr>
             <td>아이디 : </td>
@@ -19,19 +20,26 @@
         </tr>
         <tr>
             <td>비밀번호 확인 : </td>
-            <td><input type="password" name="confirmPW" id="confirmPW" onblur="checkPW2(this)" maxlength='15'></td>
-            <td class="check-user checkPW2"></td>
+            <td>
+                <input type="password" name="checkUserPW" id="checkUserPW" onblur="confirmPW(this)" maxlength='15'>
+            </td>
+            <td class="check-user confirmPW"></td>
         </tr>
         <tr>
             <td>가입코드 : </td>
             <td>
-                <input type="text" name="code" id="code" autocomplete='off' onblur="" maxlength='15'>
+                <input type="text" name="joinCode" id="joinCode" autocomplete='off' onblur="" maxlength='15'>
             </td>
             <td class=""></td>
         </tr>
         <tr>
             <td>
-                <input type="submit" value="회원가입">
+                <td class="check-user alertUser"></td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button type="button" onclick="signup()" >회원가입</button>
             </td>
         </tr>
     </table>

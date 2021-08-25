@@ -4,27 +4,19 @@ module.exports = class User extends Sequelize.Model {
     static init(sequelize) {
         // table
         return super.init({
-            name: {
+            user: {
                 type: Sequelize.STRING(20),
                 allowNull: false,
                 unique: true,
             },
-            age: {
-                type: Sequelize.INTEGER.UNSIGNED,
+            pwd: {
+                type: Sequelize.STRING(100),
                 allowNull: false,
+                unique: true,
             },
-            married: {
-                type: Sequelize.BOOLEAN,
+            salt: {
+                type: Sequelize.STRING(100),
                 allowNull: false,
-            },
-            comment: {
-                type: Sequelize.TEXT,
-                allowNull: true,
-            },
-            create_at: {
-                type: Sequelize.DATE,
-                allowNull: false,
-                defaultValue: Sequelize.NOW,
             },
         },
         {
@@ -32,7 +24,7 @@ module.exports = class User extends Sequelize.Model {
             timestamps: false,
             underscored: false,
             modelName: 'User',
-            tableName: 'user',
+            tableName: 'staff',
             paranoid: false,
             charset: 'utf8',
             collate: 'utf8_general_ci',
@@ -40,6 +32,6 @@ module.exports = class User extends Sequelize.Model {
     }
     // 다른 모델과 관계
     static associate(db) {
-        db.User.hasMany(db.Comment, { foreignKey: 'commenter', sourceKey: 'id' });
+        // db.User.hasMany(db.Comment, { foreignKey: 'commenter', sourceKey: 'id', as: 'comment_user'});
     }
 };
