@@ -49,10 +49,11 @@ router.post("/login", async function (req, res, next) {
         if (dbPW === hashPW) {
             console.log('success');
             // 쿠키 설정
-            res.cookie("user", body.userEmail, {
-                expires: new Date(Date.now() + 24 * 60 * 60),
-                httpOnly: true
-            });
+            // res.cookie("user", inputID, {
+            //     expires: new Date(Date.now() + 24 * 60 * 60),
+            //     httpOnly: true
+            // });
+            req.session.user = inputID;
             return res.json(1);
         } else { }
     } catch (err) {
