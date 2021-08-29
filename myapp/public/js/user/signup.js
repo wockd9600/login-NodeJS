@@ -97,11 +97,19 @@ function signup() {
     else {
         let userID = XSSfilter(document.querySelector('#userID').value);
         let userPW = XSSfilter(document.querySelector('#userPW').value);
+        let userName = XSSfilter(document.querySelector('#userName').value);
         let joinCode = XSSfilter(document.querySelector('#joinCode').value);
+
+        // let userData = {
+        //     userID,
+        //     userPW,
+        //     joinCode,
+        //     userName,
+        // }
 
         $.ajax({
             url: `/users/signup`,
-            data: { userID, userPW },
+            data: { userID, userPW, userName, joinCode },
             type: "post",
             success: function (result) {
                 if (result) {

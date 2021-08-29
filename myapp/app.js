@@ -8,9 +8,10 @@ const logger = require('morgan');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
 // const dotenv = require('dotenv');
+const passport = require('passport');
 
 const { sequelize } = require('./models/index');
-
+const passportConfig = require('./passport');
 // dotenv.config();
 
 const indexRouter = require('./routes/index');
@@ -19,6 +20,7 @@ const morgan = require('morgan');
 
 const app = express();
 
+passportConfig();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -49,6 +51,8 @@ app.use(session({
         maxAge: 1 * 60 * 60 * 1000 // 쿠키 유효기간 24시간
     }
 }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);

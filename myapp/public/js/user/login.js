@@ -22,7 +22,7 @@ function checkUser() {
         type: "POST",
         success: function (result) {
             if (result) {
-                location.href = 'success'
+                location.href = '/success'
             } else {
                 alertMsg.innerText = '아이디 또는 비밀번호를 확인해주세요.';
             }
